@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nomadic Learning Labs</title>
+  <meta name="description" content="Hands-on courses in generative AI, chatbots, agents, and emerging technologies for youth ages 13–17 and adults." />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Design tokens ──────────────────────────────── */
+    :root {
+      --bg:         #0f0f0f;
+      --bg2:        #161616;
+      --border:     rgba(255, 255, 255, 0.1);
+      --text:       #e8e8e2;
+      --text-soft:  #888880;
+      --link:       #a8c4a2;
+    }
+
+    /* ── Base ───────────────────────────────────────── */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ── Nav ────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .nav-logo {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .nav-logo span {
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* ── Hero ───────────────────────────────────────── */
+    .hero {
+      padding: 6rem 3rem 5rem;
+      max-width: 680px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--link);
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Buttons ────────────────────────────────────── */
+    .btn {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--bg);
+      background: var(--text);
+      padding: 0.65rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+      margin-left: 1rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--text-soft);
+      color: var(--text);
+    }
+
+    /* ── Section label ──────────────────────────────── */
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Courses ────────────────────────────────────── */
+    .courses {
+      padding: 4rem 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .course-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: baseline;
+      padding: 1.25rem 0;
+      border-top: 1px solid var(--border);
+      gap: 2rem;
+      cursor: default;
+      transition: padding-left 0.2s;
+    }
+
+    .course-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .course-item:hover {
+      padding-left: 0.75rem;
+    }
+
+    .course-name {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .course-name em {
+      font-style: italic;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .course-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .course-tag.youth {
+      color: var(--link);
+    }
+
+    /* ── Formats ────────────────────────────────────── */
+    .formats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .format-item {
+      background: var(--bg);
+      padding: 2.5rem 2rem;
+      transition: background 0.2s;
+    }
+
+    .format-item:hover {
+      background: var(--bg2);
+    }
+
+    .format-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .format-title {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .format-desc {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    /* ── CTA ────────────────────────────────────────── */
+    .cta {
+      padding: 5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cta-text {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.25;
+      color: var(--text);
+      font-weight: 400;
+      max-width: 480px;
+    }
+
+    .cta-text em {
+      font-style: italic;
+      color: var(--link);
+    }
+
+    /* ── Footer ─────────────────────────────────────── */
+    footer {
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'EB Garamond', serif;
+      font-size: 1rem;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Mobile ─────────────────────────────────────── */
+    @media (max-width: 700px) {
+      nav {
+        padding: 1.25rem 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1.25rem;
+      }
+
+      .hero {
+        padding: 4rem 1.5rem 3rem;
+      }
+
+      .courses,
+      .cta {
+        padding: 3rem 1.5rem;
+      }
+
+      .formats {
+        grid-template-columns: 1fr;
+      }
+
+      .format-item {
+        padding: 2rem 1.5rem;
+      }
+
+      .cta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+
+      footer {
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .btn-ghost {
+        margin-left: 0;
+        margin-top: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="nav-logo">N <span>Nomadic Learning Labs</span></a>
+    <ul class="nav-links">
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#formats">Format</a></li>
+      <li><a href="#enroll">Enroll</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-label">Nomadic Learning Labs</p>
+    <h1 class="hero-title">
+      Teaching humans to learn<br>in the <em>age of AI.</em>
+    </h1>
+    <p class="hero-desc">
+      Hands-on courses in generative AI, chatbots, agents, and emerging technologies.
+      Built for youth ages 13–17, and adults who want to stay ahead.
+      In-person and on-demand.
+    </p>
+    <a href="#enroll" class="btn">Enroll now</a>
+    <a href="#courses" class="btn btn-ghost">View courses</a>
+  </section>
+
+  <!-- Courses -->
+  <section id="courses" class="courses">
+    <p class="section-label">Courses</p>
+    <div class="course-list">
+      <div class="course-item">
+        <p class="course-name">AI Foundations <em>— How language models actually work</em></p>
+        <span class="course-tag youth">Ages 13–17</span>
+      </div>
+      <div class="course-item">
+        <p class="course-name">Chatbot Studio <em>— Build and direct your own chatbot</em></p>
+        <span class="course-tag youth">Ages 13–17</span>
+      </div>
+      <div class="course-item">
+        <p class="course-name">Agents &amp; Workflows <em>— AI that plans and automates</em></p>
+        <span class="course-tag youth">Ages 13–17</span>
+      </div>
+      <div class="course-item">
+        <p class="course-name">AI for Professionals <em>— Practical tools for your career</em></p>
+        <span class="course-tag">Adult</span>
+      </div>
+      <div class="course-item">
+        <p class="course-name">Prompt Engineering <em>— Advanced techniques and structured output</em></p>
+        <span class="course-tag">Adult</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formats -->
+  <div id="formats" class="formats">
+    <div class="format-item">
+      <span class="format-num">01</span>
+      <p class="format-title">In-person</p>
+      <p class="format-desc">Live, hands-on workshops in a classroom setting. Work directly with instructors and peers.</p>
+    </div>
+    <div class="format-item">
+      <span class="format-num">02</span>
+      <p class="format-title">On-demand</p>
+      <p class="format-desc">Self-paced video courses you can take anywhere, on any schedule.</p>
+    </div>
+    <div class="format-item">
+      <span class="format-num">03</span>
+      <p class="format-title">Group &amp; school</p>
+      <p class="format-desc">Custom workshops for classrooms, organizations, and companies.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section id="enroll" class="cta">
+    <p class="cta-text">
+      Ready to think alongside AI,<br>not just <em>use</em> it?
+    </p>
+    <a href="mailto:hello@nomadiclearninglabs.com" class="btn">Get in touch →</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-logo">Nomadic Learning Labs</span>
+    <p class="footer-note">© 2026 · hello@nomadiclearninglabs.com</p>
+  </footer>
+
+  <script>
+    // Smooth active state for nav links on scroll
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            navLinks.forEach((link) => {
+              link.style.color = '';
+              if (link.getAttribute('href') === '#' + entry.target.id) {
+                link.style.color = 'var(--text)';
+              }
+            });
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Fade-in on scroll for course items and format items
+    const revealItems = document.querySelectorAll('.course-item, .format-item');
+
+    revealItems.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(10px)';
+      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    });
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    revealItems.forEach((el) => revealObserver.observe(el));
+  </script>
+
+</body>
+</html>
